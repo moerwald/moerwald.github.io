@@ -1,19 +1,21 @@
 ---
 layout: post
 title:  "Convert GIT log entries to PowerShell objects"
-date:   2019-08-04 17:33:00 +0000 
-categories: GIT PowerShell
+published : true
+categories: 
+    - GIT 
+    - PowerShell
 ---
 
+Sometimes you're in the situation where you've to revert a specific commit via git revert sha1. Sometimes you only have a ticket number (in the best case ) and need to find out the corresponding GIT SHA1.
 
+* Option 1: Type git log and read the commit messages ...
 
-Sometimes you’re in the situation where you’ve to revert a specific commit via git revert sha1. Sometimes you only have a ticket number (in the best case …) and need to find out the corresponding GIT SHA1.
+* Option 2: Convert the git log output to a PowerShell object.
 
-Option 1: Type git log and read the commit messages ...
+## How can option two be realized?
 
-Option 2: Convert the git log output to a PowerShell object.
-
-How can option two be realized? Well GIT log supports pretty-formats, which you can use to sculpture your stdout output to make it easier to parse. Below you see the one-liner using the advantage of this formating feature:
+Well GIT log supports pretty-formats, which you can use to sculpture your stdout output to make it easier to parse. Below you see the one-liner using the advantage of this formating feature:
 
 {% highlight powershell %}
 {% raw %}
@@ -21,7 +23,7 @@ How can option two be realized? Well GIT log supports pretty-formats, which you 
 {% endraw %}
 {% endhighlight %}
 
-*What's going on?*
+What's going on?
 
 {% highlight powershell %}
 {% raw %}
@@ -49,10 +51,11 @@ $commits = (git log --format="%ai`t%H`t%an`t%ae`t%s" -n 100) | ConvertFrom-Csv -
 {% endraw %}
 {% endhighlight %}
 
-Each entry in `$commits` will have a Date, CommitId, Author, Email and Subject property, which makes it easy to filter for specific commit messages via
+Each entry in $commits will have a Date, CommitId, Author, Email and Subject property, which makes it easy to filter for specific commit messages via
 
 {% highlight powershell %}
 {% raw %}
     $commits| Where-Object { $_.Subject -like "*added*" }
 {% endraw %}
 {% endhighlight %}
+
