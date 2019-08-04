@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Convert GIT log entries to PowerShell objects"
-date:   2019-08-04 
+date:   2019-08-04 17:33:00 +0000 
 categories: GIT PowerShell
 ---
 
