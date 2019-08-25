@@ -17,19 +17,57 @@ When working with the `split` operator you normally use the simplest form of spl
 {% endraw %}
 {% endhighlight %}
 
-Sometimes you're in the situation where you've to revert a specific commit via git revert sha1. Sometimes you only have a ticket number (in the best case ) and need to find out the corresponding GIT SHA1.
+But split offers some additional features:
 
-* Option 1: Type git log and read the commit messages ...
+* Defining the number of array entries that shall be returned.
+* Deactiving regex parsing of the split argument (which is the default behaviour)
+* Use script block parameters to define more complex split predicates (helpful when a regex can't solve your split problem)
 
-* Option 2: Convert the git log output to a PowerShell object.
+## Return a defined number of entries
 
-## How can option two be realized?
+Besides the regex pattern (used as predicate) you can also define how much entries shall be returned by split.
 
-Well GIT log supports pretty-formats, which you can use to sculpture your stdout output to make it easier to parse. Below you see the one-liner using the advantage of this formating feature:
+Example:
 
 {% highlight powershell %}
 {% raw %}
-    (git log --format="%ai`t%H`t%an`t%ae`t%s" -n 100) | ConvertFrom-Csv -Delimiter "`t" -Header ("Date","CommitId","Author","Email","Subject")
+    >"1:2:3:4:5" -split ":",3
+    1
+    2
+    3:4:5
 {% endraw %}
 {% endhighlight %}
 
+We can see that three entries are returned, where third element contains the remaining string.
+
+## Use script block parameters for complex operations
+
+Let's say we want to split this list up in pairs:
+
+{% highlight powershell %}
+{% raw %}
+    >"Mercury,Venus,Earth,Mars,Jupiter,Saturn,Uranus,Neptune"
+{% endraw %}
+{% endhighlight %}
+
+Here we need a predicate that ensures
+
+* the actual character is `,`, and
+* that we perform the operation with every second `,`
+
+For this requirement we can use a script block parameter:
+
+{% highlight powershell %}
+{% raw %}
+    > $count = q(0)
+    > "Mercury,Venus,Earth,Mars,Jupiter,Saturn,Uranus,Neptune" -split { $_ -eq "," -and ++$count[0] % 2 -eq 0 }                                                                       
+    Mercury,Venus
+    Earth,Mars
+    Jupiter,Saturn
+    Uranus,Neptune
+{% endraw %}
+{% endhighlight %}
+
+We need the helper array `count` to check if the actuall `,` occurence is even or odd.
+
+As can be seen split offers a log of options to perform complex operations.
