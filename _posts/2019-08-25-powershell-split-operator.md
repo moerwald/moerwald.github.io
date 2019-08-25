@@ -10,10 +10,10 @@ When working with the `split` operator you normally use the simplest form of spl
 
 {% highlight powershell %}
 {% raw %}
->"1:2:3" -split ":"
-1
-2
-3
+    >"1:2:3" -split ":"
+    1
+    2
+    3
 {% endraw %}
 {% endhighlight %}
 
