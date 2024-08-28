@@ -1,7 +1,8 @@
-
 ---
-title: Dynamic Local Storage in Kubernetes with the Local Path Provisioner
-category: Kubernetes
+layout: post
+title:  "Dynamic Local Storage in Kubernetes with the Local Path Provisioner"
+categories: 
+    - Kubernetes 
 ---
 
 In Kubernetes, Persistent Volume Claims (PVCs) are essential for storing data beyond the lifespan of a pod. While Kubernetes is inherently geared towards dynamic cloud storage solutions, there are many scenarios where local storage on nodes needs to be used. This is where the **Local Path Provisioner** comes into play, offering a simple and effective solution for PVCs on local storage.
